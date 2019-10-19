@@ -8,7 +8,7 @@ shelves
 ______________________
 STRUCTURE OF VARIABLES
 
-item[3] = [barcode: int, name: str, size: int]
+item[3] = (barcode: int, name: str, size: int) # tuple
 
 incoming_items = {item: quantity, ...}
 
@@ -17,7 +17,7 @@ trolly_items = {item: quantity, ...}
 # We will have a set number of shelves (length of shelves will not change)
 shelves = [shelf, shelf, shelf]
 
-shelf[3] = [shelf_capacity, cur_capacity, {item: quantity, item: quantitiy, ...}]
+shelf[3] = [max_capacity, cur_capacity, {item: quantity, item: quantitiy, ...}]
 
 
 

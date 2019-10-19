@@ -59,7 +59,7 @@ class In:
         return incoming_items_duplicate, trolly_items
     
 
-    def trolly_to_shelves(self, trolly_items: Dict, shelves: List) -> Tuple:
+    def trolly_to_shelves(trolly_items: Dict, shelves: List) -> Tuple:
         """Transfers all of the items on the trolly to empty shelves
         by checking each shelve and seeing which one has enough space to fit the items
         
@@ -73,19 +73,21 @@ class In:
 
         Returns:
             A tuple of the variables trolly_items (should be empty if 
-            everything fit in the shelves) as well as the shelves variable and
-            a boolean (True if everything fit onto the shelves and false if something(s)
-            are still in the trolly_items variable)
+            everything fit in the shelves) as well as the shelves variable
         """
 
         for item in trolly_items.keys():
             quantity = trolly_items[item]
-            size = trolly_items[item["size"]]
+            size = item[2]
             size_all = quantity * size
+
+            if quantity <= 0:
+                continue
+
 
             # Finds out if all of the same item can be added into same shelf
             for i, shelf in enumerate(shelves):
-                if shelf[0] <= shelf[1] + size_all: # If shelf_capacity <= than cur_capacity + size_all
+                if shelf[0] >= shelf[1] + size_all: # If max_capacity >= than cur_capacity + size_all
                     shelves[i][1] += size_all # Updates cur_capacity
                     
                     try:
@@ -96,20 +98,30 @@ class In:
                     trolly_items[item] = 0 # removes items from trolly_items
 
                     break
-
             # Puts each item as soon as possible
             else:
-                for i, shelf in enumerate(shelves):
-                    while shelf[0] <= shelf[1] + size: # If shelf_capacity <= than cur_capacity + size
-                        shelves[i][2][1] += size # Updates cur_capacity
-                        
+                j = 0
+                while True:
+
+                    if trolly_items[item] == 0:
+                        break
+
+                    if shelves[j][0] >= shelves[j][1] + size:
+                        shelves[j][1] += size
+                    
                         try:
-                            shelves[i][2][item] += 1 # adds item to shelf
+                            shelves[j][2][item] += 1
                         except:
-                            shelves[i][2][item] = 1 # adds item to shelf
+                            shelves[j][2][item] = 1
                         
-                        trolly_items[item] -= 1 # removes item from trolly_items
-        
+                        trolly_items[item] -= 1
+                        
+                        continue
+
+                    j += 1
+                    if j == len(shelves):
+                        break
+
         trolly_items_duplicate = trolly_items.copy()
 
         for item in trolly_items.keys():
