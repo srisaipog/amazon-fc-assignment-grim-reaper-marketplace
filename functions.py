@@ -231,7 +231,7 @@ class Out:
         Returns:
             A tuple of A dictionary of the order and to_ship_items
             Ex: 
-            order = {address, barcode, items}
+            order = {address, bsarcode, items}
                                        items = {item: quantity, ...}
         
         """
