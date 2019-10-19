@@ -54,14 +54,43 @@ class In:
         """
 
         for item in trolly_items.keys():
-            size = trolly_items[item]
-            size_all = size * trolly_items[item["size"]]
+            quantity = trolly_items[item]
+            size = trolly_items[item["size"]]
+            size_all = quantity * size
 
             # Finds out if all of the same item can be added into same shelf
             for i, shelf in enumerate(shelves):
-                if shelf[0] <= shelf[1] + size_all: # If shelf_capacity <= than cur_capacity + size
-                    shelves[i][1] += size # Updates cur_capacity
-                    shelves[i].append({item, trolly_items[item]}) # adds item to shelf
+                if shelf[0] <= shelf[1] + size_all: # If shelf_capacity <= than cur_capacity + size_all
+                    shelves[i][1] += size_all # Updates cur_capacity
+                    
+                    try:
+                        shelves[i][a] += quantity # adds items to shelf
+                    except:
+                        shelves[i].append({item, quantity}) # adds items to shelf
+                    
+                    trolly_items[item] = 0 # removes items from trolly_items
+
+                    break
+
+            # Puts each item as soon as possible
+            else:
+                for i, shelf in enumerate(shelves):
+                    while shelf[0] <= shelf[1] + size: # If shelf_capacity <= than cur_capacity + size
+                        shelves[i][1] += size # Updates cur_capacity
+                        
+                        try:
+                            shelves[i][a] += 1 # adds item to shelf
+                        except:
+                            shelves[i].append({item, 1}) # adds item to shelf
+                        
+                        trolly_items[item] -= 1 # removes item from trolly_items
+
+                    
+            
+        for item in trolly_items.keys():
+            if trolly_items[item] <= 0:
+                trolly_items.pop(item)
+
 
 
 
