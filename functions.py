@@ -132,16 +132,206 @@ class In:
         return trolly_items_duplicate, shelves
 
 
+
 # Item Flow: Order-fulfilment station
 class Process:
-    pass
+    
+    def __init__(self):
+        pass
+
+
+    def get_item_location(item: Tuple, quantitiy: int = 0) -> Dict:
+        """Finds the location of the given item based on the quantity
+        If the quantity is <= 0 or not given, find all instances of the
+        item. If a quantity > 0 is given, that many instances of the item
+
+        Args:
+            item: A tuple of the item (with it's barcode, name, size and img_file)
+            quantity: the number of the specified item you want to find
+        
+        Returns:
+            A dict of the shelf numbers and how many
+            of each item there in each shelf
+
+            Ex: {1: 6, 9: 1, 10: 13}
+            There are 6 of the item in shelf 1
+            1 of the item in shelf 9
+            13 of the item in shelf 10
+        """
+        
+        pass
+
+
+    def shelf_to_package(item: Tuple, quantity: int, shelves: List, to_package_items: Dict) -> Tuple:
+        """Recieves the item and the quantity of the number
+        wanted to move to the packagers. Will call get_item_location
+        to find out where each item is, remove it from that shelf
+        and place it in to_package_items along with their quantity.
+
+        Args:
+            item: A tuple of the item (with it's barcode, name, size and img_file)
+            quantity: the number of the specified item you want to find
+            shelves: A list of the shelves
+            to_package_items: a dict of items to be packaged with their respective quantities
+        
+        Returns:
+            A tuple: (shelves, to_package_items)
+        """
+
+        pass
+
+
+    def package(to_package_items: Dict, packaged_items: Dict) -> Tuple:
+        """Packages items. Moves them from to_package_items
+        to packaged_items onces packaged. Do this one at
+        a time for each item. If an item has a quantity of 6,
+        make sure to move it 1 at a time. Finds the total size of
+        the items in the order (to_package_item) and finds a box size.
+
+        Args:
+            to_package_items: a dict of items to be packaged with their respective quantities
+            packaged_items: a dict of packaged items with their respective quantities
+        
+        Returns:
+            a tuple: (to_package_items, packaged_items, box_size)
+        """
+
+        pass
+
+
+    def packaged_to_to_ship(packaged_items: Dict, to_ship_items: Dict) -> Tuple:
+        """Moves packaged items to to_ship_items one at a time
+
+        Args:
+            packaged_items: a dict of packaged items with their respective quantities
+            to_ship_items: a dict of items to be stamped with their respective quantities
+        
+        Returns:
+            a tuple: (packaged_items, to_ship_items)
+        """
+
+        pass
+
 
 
 # Item Flow: Ship-out station
 class Out:
-    pass
+    def __init__(self):
+        pass
 
 
-         
+    def stamp(to_ship_items: Dict, address: str, barcode: int) -> Dict:
+        """Takes the items to be shipped, address and barcode
+        and puts them into an order
+        
+        Args:
+            to_ship_items: to_ship_items: a dict of items to be stamped with their respective quantities
+            address: the address of which the package should be sent to
+            barcode: the barcode of the order
+        Returns:
+            A tuple of A dictionary of the order and to_ship_items
+            Ex: 
+            order = {address, barcode, items}
+                                       items = {item: quantity, ...}
+        
+        """
+
+        order = {}
+        order["address"] = address
+        order["barcode"] = barcode
+        order["items"] = {}
+
+        for item in to_ship_items:
+            for num in range(to_ship_items[item]):
+                try:
+                    order["items"][item] += 1
+                except:
+                    order["items"][item] = 1
+                
+                to_ship_items[item] -= 1
+        
+        to_ship_items_duplicate = to_ship_items.copy()
+
+        for item in to_ship_items_duplicate:
+            if to_ship_items_duplicate[item] <= 0:
+                to_ship_items.pop(item)
+        
+        return order, to_ship_items
 
 
+    def to_truck(order, truck):
+        """Adds the order to the list of orders (truck)
+
+        Args:
+            order: A dict with the address, barcode and items
+            truck: A list of orders that need to be delivered
+        
+        Returns:
+            The list truck with the order added to it
+        """
+        
+        pass
+
+
+
+def save(file, to_store):
+    """Replaces the set in data.json with
+    the newer variables
+
+    Args:
+        file: the name of the file to save to
+        to_store: A set of:
+
+        incoming_items: a dict with items
+        trolly_items: a dict with items
+        to_package_items: a dicts with items
+        packaged_items: a dict with items
+        to_ship_items: a dict with items
+        truck: a list of orders
+        orders: a list of orders
+        shelves: a list of shelves
+    Returns:
+        None
+    """
+
+    all = {
+        0: incoming_items,
+        1: trolly_items,
+        2: to_package_items,
+        3: packaged_items,
+        4: to_ship_items,
+
+        5: truck,
+        6: orders,
+
+        7: shelves
+    }
+
+    with open(file, "w") as f:
+        json.dump(all, f)
+
+
+def load(file):
+    """Loads variables from data.json
+    into memory
+
+    Args:
+        file: the name of the file to load from
+    
+    Returns:
+        A set of:
+
+        incoming_items: a dict with items
+        trolly_items: a dict with items
+        to_package_items: a dicts with items
+        packaged_items: a dict with items
+        to_ship_items: a dict with items
+        truck: a list of orders
+        orders: a list of orders
+        shelves: a list of shelves
+    """
+
+    with open(file, "r") as f:
+        to_load = json.load(f)
+
+    return to_load

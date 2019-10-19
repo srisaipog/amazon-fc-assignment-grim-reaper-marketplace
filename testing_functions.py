@@ -10,6 +10,7 @@ items = (
     (9876, "test 5", 3, "9876.jpg")
     )
 
+# Item Flow: In
 
 def test_scan_to_truck():
     assert In.scan_to_truck(1235, "test 1", 1, "12345.jpg") == items[0]
@@ -57,3 +58,43 @@ def test_trolly_to_shelves():
     
     test_shelves = [[16, 0, {}], [16, 0, {}], [25, 0, {}], [25, 0, {}], [25, 0, {}]]
     assert In.trolly_to_shelves({items[0]: 16, items[1]: 12}, test_shelves) == ({}, [[16, 16, {items[0]: 16}], [16, 0, {}], [25, 24, {items[1]: 12}], [25, 0, {}], [25, 0, {}]])
+
+
+# Item Flow: Order-fulfilment station
+
+def test_get_item_location():
+    # Process.get_item_location()
+
+    pass
+
+
+def test_shelf_to_package():
+    # Process.shelf_to_package()
+
+    pass
+
+
+def test_package():
+    # Process.package()
+
+    pass
+
+
+def test_packaged_to_to_ship():
+    # Process.packaged_to_to_ship()
+
+    pass
+
+
+# Item Flow: Ship-out station
+
+def test_stamp():
+    assert Out.stamp({items[1]: 6, items[2]: 6}, "8101 Leslie St.", 21435) == ({"address": "8101 Leslie St.", "barcode": 21435, "items": {items[1]: 6, items[2]: 6}}, {})
+    assert Out.stamp({items[4]: 322}, "DC 22202", 1941) == ({"address": "DC 22202", "barcode": 1941, "items": {items[4]: 322}}, {})
+    assert Out.stamp({items[0]: 1}, "North Pole. H0H 0H0", 8000000000) == ({"address": "North Pole. H0H 0H0", "barcode": 8000000000, "items": {items[0]: 1}}, {})
+
+def test_to_truck():
+    # Out.to_truck()
+    
+    pass
+
