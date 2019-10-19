@@ -64,9 +64,9 @@ class In:
                     shelves[i][1] += size_all # Updates cur_capacity
                     
                     try:
-                        shelves[i][a] += quantity # adds items to shelf
+                        shelves[i][2][item] += quantity # adds items to shelf
                     except:
-                        shelves[i].append({item, quantity}) # adds items to shelf
+                        shelves[i][2][item] = quantity # adds items to shelf
                     
                     trolly_items[item] = 0 # removes items from trolly_items
 
@@ -76,20 +76,20 @@ class In:
             else:
                 for i, shelf in enumerate(shelves):
                     while shelf[0] <= shelf[1] + size: # If shelf_capacity <= than cur_capacity + size
-                        shelves[i][1] += size # Updates cur_capacity
+                        shelves[i][2][1] += size # Updates cur_capacity
                         
                         try:
-                            shelves[i][a] += 1 # adds item to shelf
+                            shelves[i][2][item] += 1 # adds item to shelf
                         except:
-                            shelves[i].append({item, 1}) # adds item to shelf
+                            shelves[i][2][item] = 1 # adds item to shelf
                         
                         trolly_items[item] -= 1 # removes item from trolly_items
-
-                    
             
         for item in trolly_items.keys():
             if trolly_items[item] <= 0:
                 trolly_items.pop(item)
+    
+    return trolly_items, shelves
 
 
 
