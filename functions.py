@@ -5,13 +5,14 @@ from typing import Dict, Tuple, List
 # CHANGE ALL item VARIABLES INTO TUPLES FROM LISTS
 # tuples are hashable while lists are not, that's why
 
+# Item Flow: In
 class In:
     
     def __init__(self):
         pass
 
     
-    def scan_to_truck(barcode: int, name: str, size: int) -> Tuple:
+    def scan_to_truck(barcode: int, name: str, size: int, img_file: str) -> Tuple:
         """Creates a tuple in the order: barcode, name, size
         
         Args:
@@ -23,7 +24,7 @@ class In:
             A tuple of the barcode, name and size
         """
 
-        return (barcode, name, size)
+        return (barcode, name, size, img_file)
 
 
     def truck_to_trolly(incoming_items: Dict, trolly_items: Dict) -> Tuple:
@@ -131,12 +132,12 @@ class In:
         return trolly_items_duplicate, shelves
 
 
-
+# Item Flow: Order-fulfilment station
 class Process:
     pass
 
 
-
+# Item Flow: Ship-out station
 class Out:
     pass
 
