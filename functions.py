@@ -11,7 +11,7 @@ class In:
         pass
 
     
-    def scan_to_truck(self, barcode: int, name: str, size: int) -> Tuple:
+    def scan_to_truck(barcode: int, name: str, size: int) -> Tuple:
         """Creates a tuple in the order: barcode, name, size
         
         Args:
@@ -23,7 +23,7 @@ class In:
             A tuple of the barcode, name and size
         """
 
-        pass
+        return (barcode, name, size)
 
 
     def truck_to_trolly(incoming_items: Dict, trolly_items: Dict) -> Tuple:
@@ -132,7 +132,13 @@ class In:
 
 
 
+class Process:
+    pass
 
+
+
+class Out:
+    pass
 
 
          

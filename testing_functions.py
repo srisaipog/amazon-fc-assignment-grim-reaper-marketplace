@@ -1,9 +1,6 @@
 # testing_functions.py
 
 from functions import *
-# from typing import Dict, List, Tuple
-
-# item = (barcode: int, name: str, size: int)
 
 items = (
     (1235, "test 1", 1),
@@ -15,7 +12,9 @@ items = (
 
 
 def test_scan_to_truck():
-    pass
+    assert In.scan_to_truck(1235, "test 1", 1) == items[0]
+    assert In.scan_to_truck(1111111111111111, "my name is bob", 1) == (1111111111111111, "my name is bob", 1)
+    assert In.scan_to_truck(9876, "test 5", 3) == (9876, "test 5", 3)
 
 
 def test_truck_to_trolly():
@@ -24,6 +23,7 @@ def test_truck_to_trolly():
     assert In.truck_to_trolly({}, {}) == ({}, {})
     assert In.truck_to_trolly({items[2]: 5, items[3]: 4, items[0]: 6}, {items[2]: 10}) == ({}, {items[2]: 15, items[3]: 4, items[0]: 6})
     assert In.truck_to_trolly({items[0]: 1}, {}) == ({}, {items[0]: 1})
+
 
 def test_trolly_to_shelves():
     
