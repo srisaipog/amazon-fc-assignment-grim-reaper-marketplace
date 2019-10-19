@@ -1,16 +1,34 @@
 # functions.py
 
-from typing import Dict, Tuple
+from typing import Dict, Tuple, List
 
+# CHANGE ALL item VARIABLES INTO TUPLES FROM LISTS
+# tuples are hashable while lists are not, that's why
 
 class In:
     
     def __init__(self):
         pass
 
-    def truck_to_trolly(self, incoming_items: Dict, trolly_items: Dict): -> Tuple
+    
+    def scan_to_truck(self, barcode: int, name: str, size: int) -> Tuple:
+        """Creates a tuple in the order: barcode, name, size
+        
+        Args:
+            barcode: an integer of the barcode of the item
+            name: a string of the name of the item
+            size: an integer of the size of the item
+
+        Returns:
+            A tuple of the barcode, name and size
+        """
+
+        pass
+
+
+    def truck_to_trolly(incoming_items: Dict, trolly_items: Dict) -> Tuple:
         """Takes items from the incoming shipment and
-           transfers them to the trolly
+        transfers them to the trolly
 
         Args:
             incoming_items: all of the incoming items with 
@@ -30,21 +48,28 @@ class In:
             except:
                 trolly_items[item] = incoming_items[item]
             
-        return incoming_items, trolly_items
+            incoming_items[item] -= incoming_items[item]
+        
+        incoming_items_duplicate = incoming_items.copy()
+
+        for item in incoming_items.keys():
+            if incoming_items_duplicate[item] <= 0:
+                incoming_items_duplicate.pop(item)
+
+        return incoming_items_duplicate, trolly_items
     
 
-    def trolly_to_shelves(self, trolly_items: Dict, shelves: List): -> Tuple
+    def trolly_to_shelves(self, trolly_items: Dict, shelves: List) -> Tuple:
         """Transfers all of the items on the trolly to empty shelves
-           by checking each shelve and seeing which one has enough space
-           to fit the items
+        by checking each shelve and seeing which one has enough space to fit the items
         
         Args:
             trolly_items: all of the items in the trolly with
                           the key as the item and the value as the quantity of the item
             shelves: a list of singular shelves whose
-            first index contains the shelf capacity,
-            second index contains the current occupied space,
-            and the rest contain dicts of items and their quantities
+                     first index contains the shelf capacity,
+                     second index contains the current occupied space,
+                     and the rest contain dicts of items and their quantities
 
         Returns:
             A tuple of the variables trolly_items (should be empty if 
@@ -84,12 +109,14 @@ class In:
                             shelves[i][2][item] = 1 # adds item to shelf
                         
                         trolly_items[item] -= 1 # removes item from trolly_items
-            
+        
+        trolly_items_duplicate = trolly_items.copy()
+
         for item in trolly_items.keys():
-            if trolly_items[item] <= 0:
-                trolly_items.pop(item)
+            if trolly_items_duplicate[item] <= 0:
+                trolly_items_duplicate.pop(item)
     
-    return trolly_items, shelves
+        return trolly_items_duplicate, shelves
 
 
 
