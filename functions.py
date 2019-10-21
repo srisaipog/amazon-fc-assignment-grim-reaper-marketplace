@@ -1,6 +1,7 @@
 # functions.py
 
 from typing import Dict, Tuple, List
+import json
 
 # CHANGE ALL item VARIABLES INTO TUPLES FROM LISTS
 # tuples are hashable while lists are not, that's why
@@ -140,7 +141,7 @@ class Process:
         pass
 
 
-    def get_item_location(item: Tuple, quantitiy: int = 0) -> Dict:
+    def get_item_location(item: Tuple, quantity: int = 0) -> Dict:
         """Finds the location of the given item based on the quantity
         If the quantity is <= 0 or not given, find all instances of the
         item. If a quantity > 0 is given, that many instances of the item
