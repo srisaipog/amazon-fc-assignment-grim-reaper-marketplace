@@ -1,0 +1,41 @@
+_______________________________
+VARIABLES TO STORE IN data.json
+
+
+
+______________________
+STRUCTURE OF VARIABLES
+
+item[3] = (barcode: int, name: str, size: int, img_file: str) # tuple
+
+incoming_items = {item: quantity, ...}
+trolly_items = {item: quantity, ...}
+to_package_items = {item: quantity, ...}
+packaged_items = {item: quantity, ...}
+to_ship_items = {item: quantity, ...}
+
+orders = [order, order, order, ...]
+order = {"address": address, "barcode": barcode, "items": items}
+items = {item: quantity, ...}
+truck = [order, order, order, ...]
+
+# We will have a set number of shelves (length of shelves will not change)
+shelves = [shelf, shelf, shelf]
+shelf[3] = [max_capacity, cur_capacity, {item: quantity, item: quantitiy, ...}]
+
+
+
+In
+==
+
+
+
+Process
+=======
+
+
+
+Out
+===
+
+
