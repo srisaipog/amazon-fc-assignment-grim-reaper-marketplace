@@ -12,7 +12,7 @@ Topics:
 1. Shipment comes in
 2. Products scanned onto trolly
 3. Products taken off trolly and scanned into bins Shelf #, Compartment #
-
+j
 ### Order-fulfilment station
 1. Shelf with product sent to worker
 2. Monitor shopwing compartment # and item image
