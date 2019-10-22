@@ -8,7 +8,7 @@ class Shipment:
     Attrs:
         name (str): name of the item
         size (int): in cm
-        category (str): category of item (food, )
+        category (str): category of item (food, electronics)
     """
     def __init__(self, name: str, size: int, category: str):
         self.name = name
