@@ -3,9 +3,6 @@
 from typing import Dict, Tuple, List
 import json
 
-# CHANGE ALL item VARIABLES INTO TUPLES FROM LISTS
-# tuples are hashable while lists are not, that's why
-
 # Item Flow: In
 class In:
     
