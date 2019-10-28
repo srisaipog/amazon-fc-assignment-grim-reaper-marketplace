@@ -4,8 +4,14 @@ import json
 with open("data.json", "r") as f:
     data = json.load(f)
 
+def reset():
+    Trolly.all_trollies = []
+    Product.incoming_products = []
+    save()
+
 # maybe incvlude product tracking - im lazy :?
 class Trolly:
+    all_trollies = data["all_trollies"]
     def __init__(self, num: int):
         self.storage = []
         self.weight_capacity = 100
@@ -23,6 +29,7 @@ class Trolly:
 
 
 class Product:
+    incoming_products = data["incoming_products"]
     def __init__(self, name: str, weight: int, barcode: int):
         self.name = name
         self.barcode = barcode
