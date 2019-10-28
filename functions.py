@@ -1,6 +1,9 @@
 from typing import List, Dict
 import json
 
+with open("data.json", "r") as file:
+    data = json.load(file)
+
 # maybe incvlude product tracking - im lazy :?
 class Trolly:
     def __init__(self, num: int):
@@ -59,5 +62,11 @@ class Shipment:
             return "Products have been successfully unloaded."
     
     def check_remaining_products(self):
-        for product in products:
+        for product in Product.incoming_products:
             print(product)
+
+def save():
+    data["all_trollies"] = Trolly.all_trollies
+    data["incoming_products"] = Product.incoming_products
+    with open("data.json", "w") as file:
+        json.dump(data, file)
