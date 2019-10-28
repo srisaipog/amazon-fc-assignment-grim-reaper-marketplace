@@ -3,9 +3,8 @@ import json
 
 # maybe incvlude product tracking - im lazy :?
 class Trolly:
-    all_trollies = []
 
-    def __init__(self, number: int):
+    def __init__(self, num: int):
         self.storage = []
         self.weight_capacity = 100
         self.num = number
@@ -17,6 +16,9 @@ class Trolly:
             total += product.weight
         return total_weight
 
+    def __str__(self):
+        return f"{trolly.num} = {trolly.storage}"
+
 
 class Product:
     incoming_products = []
@@ -25,23 +27,24 @@ class Product:
         self.name = name
         self.barcode = barcode
         self.image = image
-        self.trolley_num = None
+        self.trolley_num = 'None'
         Product.incoming_products.append(self)
     
     def __str__(self):
         return f"{self.name}, {self.barcode}, {self.image}"
 
-    def package(self, address: str, warning=None):
+    def package(self, address: str, warning: str=None):
         self.address = address
         self.weight = weight
         self.warning = warning
 
 
 class Shipment:
-    def __init__(self, products: List[Product]):
+    def __init__(self, name: int, products: List[Product]):
         self.products = products
     
     def load_to_trolly(self):
+        original_size = len(Product.incoming_products)
         for product in Product.incoming_products:
             for trolly in Trolly.all_trollies:
                 if (trolly.calculate_weight() + product.weight) > 100:
@@ -51,6 +54,7 @@ class Shipment:
                     product.trolly.num = trolly.num
                     Product.incoming_products.remove(product)
                     #end the function (indicates that a trolly was found)
-                    return False
-        return "The warehouse has run out of available trollies. Feel free to create a new one."
-
+        if len(Product.incoming_products) != original_size:
+            return "There are " + str(len(Product.incoming_products)) + "remaining. Make more and try again."
+        else:
+            return "Products have been successfully unloaded."
