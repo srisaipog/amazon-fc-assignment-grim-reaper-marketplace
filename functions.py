@@ -3,7 +3,6 @@ import json
 
 # maybe incvlude product tracking - im lazy :?
 class Trolly:
-
     def __init__(self, num: int):
         self.storage = []
         self.weight_capacity = 100
@@ -21,9 +20,7 @@ class Trolly:
 
 
 class Product:
-    incoming_products = []
-
-    def __init__(self, name: str, weight: int, barcode: int, image: str):
+    def __init__(self, name: str, weight: int, barcode: int):
         self.name = name
         self.barcode = barcode
         self.image = image
@@ -31,12 +28,15 @@ class Product:
         Product.incoming_products.append(self)
     
     def __str__(self):
-        return f"{self.name}, {self.barcode}, {self.image}"
+        return f"{self.name}, {self.barcode}"
 
     def package(self, address: str, warning: str=None):
         self.address = address
         self.weight = weight
         self.warning = warning
+    
+    def empty_incoming(self):
+        incoming_products = []
 
 
 class Shipment:
@@ -44,8 +44,8 @@ class Shipment:
         self.products = products
     
     def load_to_trolly(self):
-        original_size = len(Product.incoming_products)
-        for product in Product.incoming_products:
+        original_size = len(products)
+        for product in products:
             for trolly in Trolly.all_trollies:
                 if (trolly.calculate_weight() + product.weight) > 100:
                     continue
@@ -53,8 +53,11 @@ class Shipment:
                     trolly.storage.append(product)
                     product.trolly.num = trolly.num
                     Product.incoming_products.remove(product)
-                    #end the function (indicates that a trolly was found)
         if len(Product.incoming_products) != original_size:
-            return "There are " + str(len(Product.incoming_products)) + "remaining. Make more and try again."
+            return "There are " + str(len(Product.incoming_products)) + " remaining. Make more trollies to finish loading the products."
         else:
             return "Products have been successfully unloaded."
+    
+    def check_remaining_products(self):
+        for product in products:
+            print(product)
