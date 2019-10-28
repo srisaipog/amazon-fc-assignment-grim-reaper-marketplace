@@ -1,8 +1,8 @@
 from typing import List, Dict
 import json
 
-with open("data.json", "r") as file:
-    data = json.load(file)
+with open("data.json", "r") as f:
+    data = json.load(f)
 
 # maybe incvlude product tracking - im lazy :?
 class Trolly:
@@ -68,5 +68,5 @@ class Shipment:
 def save():
     data["all_trollies"] = Trolly.all_trollies
     data["incoming_products"] = Product.incoming_products
-    with open("data.json", "w") as file:
-        json.dump(data, file)
+    with open("data.json", "w") as f:
+        json.dump(data, f)
