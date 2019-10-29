@@ -15,8 +15,8 @@ class Trolly:
     def __init__(self, num: int):
         self.storage = []
         self.weight_capacity = 100
-        self.num = number
-        all_trollies.append(self)
+        self.num = num
+        Trolly.all_trollies.append(self)
     
     def calculate_weight(self):
         total_weight = 0
@@ -25,7 +25,7 @@ class Trolly:
         return total_weight
 
     def __str__(self):
-        return f"{trolly.num} = {trolly.storage}"
+        return f"{self.num} = {self.storage}"
 
 
 class Product:
@@ -46,7 +46,7 @@ class Product:
         self.warning = warning
     
     def empty_incoming(self):
-        incoming_products = []
+        Product.incoming_products = []
 
 
 class Shipment:
