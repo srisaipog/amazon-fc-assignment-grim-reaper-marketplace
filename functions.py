@@ -136,6 +136,10 @@ def save():
         pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
 
 def main():
+    """if you are not using the program, you have to access the Trolly.all_trollies
+    via the dictionaries in data.p file. Otherwise, printing the trollies in Trolly.all_trollies
+    will return a blank list, since they have been yet to be declared.
+    """
     for trolly in data["all_trollies"]:
         for product in trolly.storage:
             print(product)
