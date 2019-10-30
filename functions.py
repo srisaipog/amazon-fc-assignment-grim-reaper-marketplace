@@ -43,7 +43,7 @@ class Product:
         self.name = name
         self.weight = weight
         self.barcode = barcode
-        self.trolley_id = 'None'
+        self.loc = 'None'
         Product.incoming_products.append(self)
     
     def __str__(self):
@@ -63,18 +63,18 @@ class Shipment:
         self.products = products
     
     def load_to_trolly(self):
-        original_size = len(self.products)
-        for product in self.products:
-            print(product)
+        for i, product in enumerate(self.products):
             for trolly in Trolly.all_trollies:
-                if (trolly.calculate_weight() + product.weight) > 100:
+                if (trolly.calculate_weight() + product.weight) > trolly.weight_capacity:
+                    print(f"{product.name} was not transfered.")
                     continue
                 else:
+                    print(f"{product.name} was transfered.")
                     trolly.storage.append(product)
-                    product.trolly_id = trolly.id
-                    Product.incoming_products.remove(product)
-        for product in Product.incoming_products:
-            print(f"{product.name} could not be transfered.")
+                    product.loc = trolly.id
+                    Product.incoming_products[i] = 'empty'
+        
+        Product.incoming_products = []
     
     def check_remaining_products(self):
         for product in Product.incoming_products:
@@ -85,18 +85,14 @@ class Shipment:
             return str(product)
 
 def save():
-    data["all_trollies"] = Trolly.all_trollies
-    data["incoming_products"] = Product.incoming_products
+    data = {"all_trollies": Trolly.all_trollies, "incoming_products": Product.incoming_products}
     with open("data.p", "wb") as f:
         pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
 
 def main():
-    a = Product('a', 10, 1)
-    b = Product('b', 10, 2)
-    c = Product('c', 10, 3)
-    trolly = Trolly()
-    box = Shipment('box', Product.incoming_products)
-    box.load_to_trolly()
+    for trolly in data["all_trollies"]:
+        for product in trolly.storage:
+            print(product)
     
 if __name__ == '__main__':
     load()
