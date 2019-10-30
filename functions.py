@@ -1,23 +1,31 @@
 from typing import List, Dict
 import pickle
 
-data = {"all_trollies": [], "incoming_products": []}
+#set to none to avoid call before creation error
+data = {"all_trollies": [], "incoming_products": [], "num_trolly": 0}
 
 def load():
+    # loads all the saved data from previous runs
     global data
     with open("data.p", "rb") as f:
         data = pickle.load(f)
 
 def reset():
+    # creates a blank 'data.p' file
     global data
-    data = {'all_trollies': [], 'incoming_products': []}
+    data = {'all_trollies': [], 'incoming_products': [], "num_trolly": 0}
     with open("data.p", 'wb') as f:
         pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
 
-# maybe incvlude product tracking - im lazy :?
+
 class Trolly:
+    """
+    attrs:
+        all_trollies = list of objects containing all created trollies
+        num_trolly = number of trollies that have been created
+    """
     all_trollies = data["all_trollies"]
-    num_trolly = 0
+    num_trolly = data["num_trolly"]
 
     def __init__(self):
         self.storage = []
@@ -85,7 +93,7 @@ class Shipment:
             return str(product)
 
 def save():
-    data = {"all_trollies": Trolly.all_trollies, "incoming_products": Product.incoming_products}
+    data = {"all_trollies": Trolly.all_trollies, "incoming_products": Product.incoming_products, "num_trolly": num_trolly}
     with open("data.p", "wb") as f:
         pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
 
