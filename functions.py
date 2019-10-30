@@ -1,21 +1,13 @@
 from typing import List, Dict
 import pickle
 
-data = {"all_trollies": [], "incoming_products": []}
-
-def load():
-    with open("data.json", "rb") as f:
-        data = pickle.load(f)
+with open("data.json", "rb") as f:
+    data = pickle.load(f)
 
 def set_up():
     data = {'all_trollies': [], 'incoming_products': []}
     with open("data.json", 'wb') as f:
         pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
-
-def reset():
-    Trolly.all_trollies = []
-    Product.incoming_products = []
-    save()
 
 # maybe incvlude product tracking - im lazy :?
 class Trolly:
@@ -25,8 +17,8 @@ class Trolly:
     def __init__(self):
         self.storage = []
         self.weight_capacity = 100
-        self.id = num_trolly
-        num_trolly += 1
+        self.id = Trolly.num_trolly
+        Trolly.num_trolly += 1
         Trolly.all_trollies.append(self)
     
     def calculate_weight(self):
@@ -41,10 +33,12 @@ class Trolly:
 
 class Product:
     incoming_products = data["incoming_products"]
+    
     def __init__(self, name: str, weight: int, barcode: int):
         self.name = name
+        self.weight = weight
         self.barcode = barcode
-        self.trolley_num = 'None'
+        self.trolley_id = 'None'
         Product.incoming_products.append(self)
     
     def __str__(self):
@@ -64,14 +58,15 @@ class Shipment:
         self.products = products
     
     def load_to_trolly(self):
-        original_size = len(products)
-        for product in products:
+        original_size = len(self.products)
+        for product in self.products:
+            print(product)
             for trolly in Trolly.all_trollies:
                 if (trolly.calculate_weight() + product.weight) > 100:
                     continue
                 else:
                     trolly.storage.append(product)
-                    product.trolly.id = trolly.id
+                    product.trolly_id = trolly.id
                     Product.incoming_products.remove(product)
         if len(Product.incoming_products) != original_size:
             return "There are " + str(len(Product.incoming_products)) + " remaining. Make more trollies to finish loading the products."
@@ -81,6 +76,10 @@ class Shipment:
     def check_remaining_products(self):
         for product in Product.incoming_products:
             print(product)
+    
+    def __str__(self):
+        for product in self.products:
+            return str(product)
 
 def save():
     data["all_trollies"] = Trolly.all_trollies
@@ -89,7 +88,15 @@ def save():
         pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
 
 def main():
-    pass
+    pizza = Product('Pizza', 50, 1)
+    organs = Product('Ughyurs', 50, 2)
+    trolly = Trolly()
+    box = Shipment('Box', Product.incoming_products)
+    box.load_to_trolly()
+    for trolly in Trolly.all_trollies:
+        for product in trolly.storage:
+            print(product)
 
-if __name__ == "__main__":
-   main()
+    
+if __name__ == '__main__':
+    main()
