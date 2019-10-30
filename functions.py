@@ -1,12 +1,17 @@
 from typing import List, Dict
 import pickle
 
-with open("data.json", "rb") as f:
-    data = pickle.load(f)
+data = {"all_trollies": [], "incoming_products": []}
 
-def set_up():
+def load():
+    global data
+    with open("data.p", "rb") as f:
+        data = pickle.load(f)
+
+def reset():
+    global data
     data = {'all_trollies': [], 'incoming_products': []}
-    with open("data.json", 'wb') as f:
+    with open("data.p", 'wb') as f:
         pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
 
 # maybe incvlude product tracking - im lazy :?
@@ -84,19 +89,12 @@ class Shipment:
 def save():
     data["all_trollies"] = Trolly.all_trollies
     data["incoming_products"] = Product.incoming_products
-    with open("data.json", "wb") as f:
+    with open("data.p", "wb") as f:
         pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
 
 def main():
-    pizza = Product('Pizza', 50, 1)
-    organs = Product('Ughyurs', 50, 2)
-    trolly = Trolly()
-    box = Shipment('Box', Product.incoming_products)
-    box.load_to_trolly()
-    for trolly in Trolly.all_trollies:
-        for product in trolly.storage:
-            print(product)
-
+    pass
     
 if __name__ == '__main__':
+    load()
     main()
