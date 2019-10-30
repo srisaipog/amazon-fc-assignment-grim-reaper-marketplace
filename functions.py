@@ -11,7 +11,7 @@ def load():
         data = pickle.load(f)
 
 def reset():
-    # creates a blank 'data.p' file
+    # sets the variables within 'data.p' into a blank list or 0
     global data
     data = {'all_trollies': [], 'incoming_products': [], "num_trolly": 0}
     with open("data.p", 'wb') as f:
@@ -19,15 +19,19 @@ def reset():
 
 
 class Trolly:
-    """
+    """ thing that transfers products
     attrs:
-        all_trollies = list of objects containing all created trollies
-        num_trolly = number of trollies that have been created
+        all_trollies(List[Trolly]) = list of objects containing all created trollies
+        num_trolly(int) = number of trollies that have been created
+        storage(List[Product]) = list of objects containg all the products within a trollies' storage 
+        weight_capacity(int) = the maximum amount of weight a trollies' storage can contain
+        id(int) = creation number of the trolly
     """
     all_trollies = data["all_trollies"]
     num_trolly = data["num_trolly"]
 
     def __init__(self):
+        # creates the trolly
         self.storage = []
         self.weight_capacity = 100
         self.id = Trolly.num_trolly
@@ -35,6 +39,7 @@ class Trolly:
         Trolly.all_trollies.append(self)
     
     def calculate_weight(self):
+        # calculates the amount of weight currently being held by the trollies' storage
         total_weight = 0
         for product in self.storage:
             total_weight += product.weight
@@ -45,9 +50,23 @@ class Trolly:
 
 
 class Product:
+    """ cant put in words do 4 me :D?
+        attrs:
+            incoming_products(List[Product]): products ready to be loaded
+            name(str) = name of the product
+            weight(int) = weight of the product
+            barcode(int) = product's barcode
+            loc(str/int) = where the product currently is)
+    """
     incoming_products = data["incoming_products"]
     
     def __init__(self, name: str, weight: int, barcode: int):
+        """ creates the product
+        args:
+            name(str) = name of the product
+            weight(int) = weight of the product
+            barcode(int) = product's barcode
+        """
         self.name = name
         self.weight = weight
         self.barcode = barcode
@@ -58,19 +77,36 @@ class Product:
         return f"{self.name}, {self.barcode}"
 
     def package(self, address: str, warning: str=None):
+        """ prepares the product for shipping (shipping has not been implemented yet)
+        args:
+            address = where the product will be sent
+            warning = any hazards the product poses
+        """
         self.address = address
-        self.weight = weight
         self.warning = warning
     
     def empty_incoming(self):
+        """ removes all incoming_products"""
         Product.incoming_products = []
 
 
 class Shipment:
-    def __init__(self, name: int, products: List[Product]):
+    """ write 4 me. i am lazy!!!!!!!
+    attrs:
+        name(str): name of the shipment
+        products(List[Product]): products within the shipment
+    """
+    def __init__(self, name: str, products: List[Product]):
+        """ creates the shipment
+        args:
+            name = name of the shipment
+            products = products within the shipment
+        """
+        self.name = name
         self.products = products
     
     def load_to_trolly(self):
+        # transfer the all the products in the shipment into the available trollies
         for i, product in enumerate(self.products):
             for trolly in Trolly.all_trollies:
                 if (trolly.calculate_weight() + product.weight) > trolly.weight_capacity:
@@ -81,10 +117,11 @@ class Shipment:
                     trolly.storage.append(product)
                     product.loc = trolly.id
                     Product.incoming_products[i] = 'empty'
-        
+        #change this - this will delete products that were not shipped as well (mb) :D
         Product.incoming_products = []
     
     def check_remaining_products(self):
+        # prints out the products in the shipment
         for product in Product.incoming_products:
             print(product)
     
@@ -93,6 +130,7 @@ class Shipment:
             return str(product)
 
 def save():
+    # saves changed data to the data.p file
     data = {"all_trollies": Trolly.all_trollies, "incoming_products": Product.incoming_products, "num_trolly": num_trolly}
     with open("data.p", "wb") as f:
         pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
