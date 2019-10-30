@@ -29,7 +29,7 @@ class Trolly:
     def calculate_weight(self):
         total_weight = 0
         for product in self.storage:
-            total += product.weight
+            total_weight += product.weight
         return total_weight
 
     def __str__(self):
@@ -73,10 +73,8 @@ class Shipment:
                     trolly.storage.append(product)
                     product.trolly_id = trolly.id
                     Product.incoming_products.remove(product)
-        if len(Product.incoming_products) != original_size:
-            return "There are " + str(len(Product.incoming_products)) + " remaining. Make more trollies to finish loading the products."
-        else:
-            return "Products have been successfully unloaded."
+        for product in Product.incoming_products:
+            print(f"{product.name} could not be transfered.")
     
     def check_remaining_products(self):
         for product in Product.incoming_products:
@@ -93,7 +91,12 @@ def save():
         pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
 
 def main():
-    pass
+    a = Product('a', 10, 1)
+    b = Product('b', 10, 2)
+    c = Product('c', 10, 3)
+    trolly = Trolly()
+    box = Shipment('box', Product.incoming_products)
+    box.load_to_trolly()
     
 if __name__ == '__main__':
     load()
