@@ -46,7 +46,7 @@ class Trolly:
         return total_weight
 
     def __str__(self):
-        return f"{self.id} = {self.storage}"
+        return f"ID: {self.id}"
 
 
 class Product:
@@ -74,7 +74,7 @@ class Product:
         Product.incoming_products.append(self)
     
     def __str__(self):
-        return f"{self.name}, {self.barcode}"
+        return f"Name: {self.name} Code: {self.barcode}"
 
     def package(self, address: str, warning: str=None):
         """ prepares the product for shipping (shipping has not been implemented yet)
@@ -85,7 +85,8 @@ class Product:
         self.address = address
         self.warning = warning
     
-    def empty_incoming(self):
+    @staticmethod
+    def empty_incoming():
         """ removes all incoming_products"""
         Product.incoming_products = []
 
@@ -110,15 +111,14 @@ class Shipment:
         for i, product in enumerate(self.products):
             for trolly in Trolly.all_trollies:
                 if (trolly.calculate_weight() + product.weight) > trolly.weight_capacity:
-                    print(f"{product.name} was not transfered.")
                     continue
                 else:
                     print(f"{product.name} was transfered.")
                     trolly.storage.append(product)
                     product.loc = trolly.id
                     Product.incoming_products[i] = 'empty'
-        #change this - this will delete products that were not shipped as well (mb) :D
-        Product.incoming_products = []
+                    break
+        Product.empty_incoming()
     
     def check_remaining_products(self):
         # prints out the products in the shipment
@@ -131,7 +131,7 @@ class Shipment:
 
 def save():
     # saves changed data to the data.p file
-    data = {"all_trollies": Trolly.all_trollies, "incoming_products": Product.incoming_products, "num_trolly": num_trolly}
+    data = {"all_trollies": Trolly.all_trollies, "incoming_products": Product.incoming_products, "num_trolly": Trolly.num_trolly}
     with open("data.p", "wb") as f:
         pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
 
@@ -140,9 +140,13 @@ def main():
     via the dictionaries in data.p file. Otherwise, printing the trollies in Trolly.all_trollies
     will return a blank list, since they have been yet to be declared.
     """
-    for trolly in data["all_trollies"]:
-        for product in trolly.storage:
-            print(product)
+    pizza = Product('a', 51, 1)
+    sushi = Product('b', 51, 2)
+    one = Trolly()
+    two = Trolly()
+    box = Shipment('Box', Product.incoming_products)
+    box.load_to_trolly()
+    save()
     
 if __name__ == '__main__':
     load()
