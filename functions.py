@@ -188,7 +188,10 @@ def main():
     input_actions = {
         'options': ["options", "ops", "option"],
         'mean': ['mean', "i hate you", "you suck", 'die', 'kys', 'no u'],
-        'exit': ["leave", "exit", "goodbye", "bye", "quit", "quit"]
+        'exit': ["leave", "exit", "goodbye", "bye", "quit", "quit"],
+        'make trolly': ['make trolly', 'trolly', 'mt'],
+        'make product': ['make product', 'product', 'mp']
+
     }
 
     while True:
@@ -208,6 +211,7 @@ def main():
                 print(action)
             continue
         
+        # Action: Mean action
         if action in input_actions["mean"]:
             print("Is this what you wanted?")
             reset()
@@ -215,12 +219,14 @@ def main():
             load()
             continue
 
+        # Action: Exit
         if action in input_actions["exit"]:
             print()
             print("Thank you for your time here at the " + '\u0336'.join("Mind Control Marketplace") + '\u0336' + " The Amazon Grim Reaper Marketplace")
             print("We " + '\u0336'.join("WILL") + '\u0336' + " hope to see you again!")
             break
-            
+        
+
         print("That was an invalid response.")
         print()
 
