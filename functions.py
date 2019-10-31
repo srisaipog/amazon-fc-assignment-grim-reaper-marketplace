@@ -190,6 +190,7 @@ def main():
         'mean': ['mean', "i hate you", "you suck", 'die', 'kys', 'no u'],
         'exit': ["leave", "exit", "goodbye", "bye", "quit", "quit"],
         'make trolly': ['make trolly', 'trolly', 'mt'],
+        'num trollies': ["num trollies", "number of trollies", "nt"],
         'make product': ['make product', 'product', 'mp']
 
     }
@@ -225,27 +226,40 @@ def main():
             print("Thank you for your time here at the " + '\u0336'.join("Mind Control Marketplace") + '\u0336' + " The Amazon Grim Reaper Marketplace")
             print("We " + '\u0336'.join("WILL") + '\u0336' + " hope to see you again!")
             break
+
+        # Action: make trolly
+        if action in input_actions["make trolly"]:
+            while True:
+                try:
+                    num_trollies = int(input("How many trollies would you like to make? "))
+                    if num_trollies <= 0:
+                        0/0
+                    break
+                except:
+                    print("Please input a valid number or trollies")
+
+            for i in range(num_trollies):
+                Trolly()
+        
+            continue
+        
+        # Action: make product
+        if action in input_actions["make product"]:
+            True
+        
+            continue
+
+        # Action: make product
+        if action in input_actions["num_trollies"]:
+            True
+            continue
+
         
 
         print("That was an invalid response.")
         print()
 
 
-
-    '''
-    for kkk in range(5):
-        Product('Pineapple Pizza' + str(kkk), 5, 234234)
-    Product('Horse Sushi', 6, 342324)
-    Trolly()
-
-    box = Shipment('Shipment 1', Product.incoming_products)
-
-    box.load_to_trolly()
-
-    print(Product.incoming_products)
-
-    save()
-    '''
     
 if __name__ == '__main__':
     load()
