@@ -21,7 +21,30 @@ def reset():
     with open("data.p", 'wb') as f:
         pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
 
+        
+class Compartment:
+    """Storage for the products
 
+        Attrs:
+            compartments (Dict): Storage for products organized by category
+            category (str): category of the item (food, book, games etc.)
+            shelf (List): shelf of a compartment to further organize products
+                            into alphabetical order
+    """
+    compartments = {"food": [], "electronics": [], "clothing": [], "books": [], "games": [], "movies/music": [], "health/beauty": [], "sports": []}
+    
+    def __init__(self, category):
+        self.category = category
+        self.shelf = []
+
+    def add_product(self, category, Product):
+        if Product.category in compartments.keys():
+            compartments[f"{Product.category}"] = f"{Product.name}"
+        else:
+
+            compartments.add(f"{Product.category}", f"{Product.name}")
+
+            
 class Trolly:
     """ thing that transfers products
     attrs:
