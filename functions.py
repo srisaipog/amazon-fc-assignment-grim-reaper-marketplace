@@ -101,12 +101,13 @@ class Product:
         Product.incoming_products.append(self)
     
     def __str__(self):
-        return f"Name: {self.name} Code: {self.barcode}"
+        return f"Name: {self.name}, Weight: {self.weight}, Barcode: {self.barcode}"
 
     """
     def package(self, address: str, warning: str=None):
         "" prepares the product for shipping (shipping has not been implemented yet)
-        args:
+        args:        'trolly weight': ['calculate trolly weight', 'ctw', 'trolly weight'],
+
             address = where the product will be sent
             warning = any hazards the product poses
         ""
@@ -191,8 +192,14 @@ def main():
         'exit': ["leave", "exit", "goodbye", "bye", "quit", "quit"],
         'make trolly': ['make trolly', 'trolly', 'mt'],
         'num trollies': ["num trollies", "number of trollies", "nt"],
-        'make product': ['make product', 'product', 'mp']
-
+        'make product': ['make product', 'product', 'mp'],
+        'list incoming products': ['list incoming products', 'list products', 'lp', 'lip'],
+        'trolly info': [],
+        'product info': [], # mabye...
+        'destroy incoming items': [],
+        'load incoming items to trolly': [],
+        'products left in shipment': [],
+    
     }
 
     while True:
@@ -240,19 +247,42 @@ def main():
 
             for i in range(num_trollies):
                 Trolly()
+            
+            print(f"Created {num_trollies} trollies")
         
             continue
         
         # Action: make product
         if action in input_actions["make product"]:
-            True
-        
+            
+            name = input("Product Name: ")
+
+            while True:
+                try:
+                    weight = int(input("Product Weight (int): "))
+                    if weight <= 0:
+                        0/0
+                    break
+                except:
+                    print("Please input a proper weight")
+            
+            while True:
+                try:
+                    barcode = int(input("Product Barcode (int): "))
+                    if barcode < 0:
+                        0/0
+                    break
+                except:
+                    print("Please input proper barcode")
+            
+            Product(name, weight, barcode)
             continue
 
-        # Action: make product
-        if action in input_actions["num_trollies"]:
-            True
+        # Action: num trollies
+        if action in input_actions["num trollies"]:
+            print(f"Number of Trollies: {Trolly.num_trolly}")
             continue
+        
 
         
 
