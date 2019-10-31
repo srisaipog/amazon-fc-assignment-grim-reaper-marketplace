@@ -140,6 +140,7 @@ def main():
     via the dictionaries in data.p file. Otherwise, printing the trollies in Trolly.all_trollies
     will return a blank list, since they have been yet to be declared.
     """
+
     pizza = Product('a', 51, 1)
     sushi = Product('b', 51, 2)
     one = Trolly()
