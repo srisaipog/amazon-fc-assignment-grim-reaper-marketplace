@@ -13,7 +13,11 @@ def load():
 def reset():
     # sets the variables within 'data.p' into a blank list or 0
     global data
-    data = {'all_trollies': [], 'incoming_products': [], "num_trolly": 0}
+    Trolly.all_trollies = []
+    Product.incoming_products = []
+    Trolly.num_trolly = 0
+
+    data = {"all_trollies": Trolly.all_trollies, "incoming_products": Product.incoming_products, "num_trolly": Trolly.num_trolly}
     with open("data.p", 'wb') as f:
         pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
 
@@ -56,7 +60,7 @@ class Product:
             name(str) = name of the product
             weight(int) = weight of the product
             barcode(int) = product's barcode
-            loc(str/int) = where the product currently is)
+            loc(int) = where the product currently is)
     """
     incoming_products = data["incoming_products"]
     
@@ -70,21 +74,23 @@ class Product:
         self.name = name
         self.weight = weight
         self.barcode = barcode
-        self.loc = 'None'
+        self.loc = -1
         Product.incoming_products.append(self)
     
     def __str__(self):
         return f"Name: {self.name} Code: {self.barcode}"
 
+    """
     def package(self, address: str, warning: str=None):
-        """ prepares the product for shipping (shipping has not been implemented yet)
+        "" prepares the product for shipping (shipping has not been implemented yet)
         args:
             address = where the product will be sent
             warning = any hazards the product poses
-        """
+        ""
         self.address = address
         self.warning = warning
-    
+    """
+
     @staticmethod
     def empty_incoming():
         """ removes all incoming_products"""
@@ -118,7 +124,18 @@ class Shipment:
                     product.loc = trolly.id
                     Product.incoming_products[i] = 'empty'
                     break
-        Product.empty_incoming()
+        i = 0
+        while True:
+            if Product.incoming_products[i] == 'empty':
+                Product.incoming_products.pop(i)
+            else:
+                i += 1
+            
+            if i == len(Product.incoming_products):
+                break
+        del i
+
+        # Product.empty_incoming()
     
     def check_remaining_products(self):
         # prints out the products in the shipment
@@ -141,13 +158,65 @@ def main():
     will return a blank list, since they have been yet to be declared.
     """
 
-    pizza = Product('a', 51, 1)
-    sushi = Product('b', 51, 2)
-    one = Trolly()
-    two = Trolly()
-    box = Shipment('Box', Product.incoming_products)
+    leave = False
+    action = ""
+    input_message = "What would you like to do? "
+
+    input_actions = {
+        'options': ["options", "ops", "option"],
+        'mean': ['mean', "i hate you", "you suck", 'die', 'kys', 'no u'],
+        'exit': ["leave", "exit", "goodbye", "bye", "quit", "quit"]
+    }
+
+    while True:
+        print()
+        save()
+        load()
+        
+        # Asks person what they want
+        action = input(input_message)
+        action = action.lower()
+
+        # Action: Prints out the options
+        if action in input_actions["options"]:
+            for action in input_actions.keys():
+                if action == "mean":
+                    continue
+                print(action)
+            continue
+        
+        if action in input_actions["mean"]:
+            print("Is this what you wanted?")
+            reset()
+            save()
+            load()
+            continue
+
+        if action in input_actions["exit"]:
+            print()
+            print("Thank you for your time here at the " + '\u0336'.join("Mind Control Marketplace") + '\u0336' + " The Amazon Grim Reaper Marketplace")
+            print("We " + '\u0336'.join("WILL") + '\u0336' + " hope to see you again!")
+            break
+            
+        print("That was an invalid response.")
+        print()
+
+
+
+    '''
+    for kkk in range(5):
+        Product('Pineapple Pizza' + str(kkk), 5, 234234)
+    Product('Horse Sushi', 6, 342324)
+    Trolly()
+
+    box = Shipment('Shipment 1', Product.incoming_products)
+
     box.load_to_trolly()
+
+    print(Product.incoming_products)
+
     save()
+    '''
     
 if __name__ == '__main__':
     load()
