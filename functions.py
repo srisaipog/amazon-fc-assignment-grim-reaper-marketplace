@@ -188,18 +188,17 @@ def main():
 
     input_actions = {
         'options': ["options", "ops", "option"],
+        'clear': ['clear', 'c'],
         'mean': ['mean', "i hate you", "you suck", 'die', 'kys', 'no u'],
-        'exit': ["leave", "exit", "goodbye", "bye", "quit", "quit"],
+        'exit': ["leave", "exit", "goodbye", "bye", "quit", "quit", "done"],
         'make trolly': ['make trolly', 'trolly', 'mt'],
         'num trollies': ["num trollies", "number of trollies", "nt"],
         'make product': ['make product', 'product', 'mp'],
         'list incoming products': ['list incoming products', 'list products', 'lp', 'lip'],
-        'trolly info': [],
-        'product info': [], # mabye...
-        'destroy incoming items': [],
-        'load incoming items to trolly': [],
-        'products left in shipment': [],
-    
+        'trolly info': ['trolly info', 'ti'],
+        'destroy incoming products': ["destroy incoming products", "dip"],
+        'load incoming products to trolly': ["load incoming products to trolly", "liptt"],
+        'incoming products left': ["incoming products left", "ipl"], 
     }
 
     while True:
@@ -210,6 +209,13 @@ def main():
         # Asks person what they want
         action = input(input_message)
         action = action.lower()
+        action = action.strip()
+
+        # Action: Clear
+        if action in input_actions["clear"]:
+            for i in range(11111):
+                print()
+            continue
 
         # Action: Prints out the options
         if action in input_actions["options"]:
@@ -275,7 +281,8 @@ def main():
                 except:
                     print("Please input proper barcode")
             
-            Product(name, weight, barcode)
+            temp_product = Product(name, weight, barcode)
+            print("Made item --> " + str(temp_product))
             continue
 
         # Action: num trollies
@@ -283,8 +290,88 @@ def main():
             print(f"Number of Trollies: {Trolly.num_trolly}")
             continue
         
+        # Action: List incoming trollies
+        if action in input_actions["list incoming products"]:
+            print("Incoming Products:")
+            
+            if len(Product.incoming_products) == 0:
+                print("None")
+                continue
 
+            for product in Product.incoming_products:
+                print(product)
+            
+            continue
         
+        # Action: Trolly info
+        if action in input_actions['trolly info']:
+            
+            while True:
+                try:
+                    trolly_id = int(input("Trolly ID: "))
+
+                    trolly_index = -1
+
+                    for i in range(len(Trolly.all_trollies)):
+                        if Trolly.all_trollies[i].id == trolly_id:
+                            trolly_index = i
+                            break
+                    
+                    if trolly_index == -1:
+                        0/0
+                    
+                    break
+
+                except:
+                    print("Please input a valid ID")
+
+            print("Trolly Contains: ")
+
+            if len(Trolly.all_trollies[trolly_index].storage) == 0:
+                continue
+
+            for product in Trolly.all_trollies[trolly_index].storage:
+                print(product)
+            
+            continue
+        
+        # Action: Destroy incoming products
+        if action in input_actions['destroy incoming products']:
+            print("Are you sure? Yes or No?")
+            confirm = input()
+            confirm = confirm[0].lower()
+
+            if confirm == "y":
+                Product.incoming_products = []
+                print("Done")
+            else:
+                print("Aborted")
+            
+            continue
+
+        # Action: Load incoming products to trolly
+        if action in input_actions["load incoming products to trolly"]:
+            print("Loading incoming items to available trollies")
+            shipment = Shipment('Shipment Test', Product.incoming_products)
+            shipment.load_to_trolly()
+
+            if len(shipment.products) > 0:
+                print(f"{len(shipment.products)} Products not transferred")
+            else:
+                print("Transferred all products")
+
+            continue
+
+
+        # Action: incoming products left
+        if action in input_actions["incoming products left"]:
+            print("Incoming products left: ")
+            for product in Product.incoming_products:
+                print(product)
+            
+            continue
+
+
 
         print("That was an invalid response.")
         print()
