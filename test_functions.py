@@ -1,5 +1,4 @@
 from functions import *
-from functions import *
 
 # first test
 one = Trolly()

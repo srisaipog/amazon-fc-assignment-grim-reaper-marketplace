@@ -77,7 +77,7 @@ class Trolly:
 
 
 class Product:
-    """ cant put in words do 4 me :D?
+    """ a commercial item that is stored, packaged, and imported
         attrs:
             incoming_products(List[Product]): products ready to be loaded
             name(str) = name of the product
@@ -122,7 +122,7 @@ class Product:
 
 
 class Shipment:
-    """ write 4 me. i am lazy!!!!!!!
+    """ packages and prepares prodcuts to be transferred to a trolly
     attrs:
         name(str): name of the shipment
         products(List[Product]): products within the shipment
