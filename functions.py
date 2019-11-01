@@ -5,13 +5,13 @@ import pickle
 data = {"all_trollies": [], "incoming_products": [], "num_trolly": 0}
 
 def load():
-    # loads all the saved data from previous runs
+    """ loads all the saved data from previous runs """
     global data
     with open("data.p", "rb") as f:
         data = pickle.load(f)
 
 def reset():
-    # sets the variables within 'data.p' into a blank list or 0
+    """ sets the variables within 'data.p' into a blank list or 0 """
     global data
     Trolly.all_trollies = []
     Product.incoming_products = []
