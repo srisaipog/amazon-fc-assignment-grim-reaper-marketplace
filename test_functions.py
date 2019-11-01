@@ -36,7 +36,14 @@ def test_move_to_trolly():
     assert len(box.products) == 0
     assert one.storage[0].name == 'a' and one.storage[1].name == 'b'
     assert two.storage[0].name == 'c'
+    
+def test_add_product_compartment():
+    assert add_product_compartment() == {"food": [], "electronics": [], "clothing": [], 
+                                         "books": [], "games": [], "movies/music": [], "health/beauty": [], "sports": []}
 
+    assert add_product_compartment("food", "marble cheese") == {"food": [{"marble cheese", "3k48234"}], "electronics": [], 
+                                                                "clothing": [], "books": [], "games": [], "movies/music": [], 
+                                                                "health/beauty": [], "sports": []}
 
 def test_calculate_weight():
     result = one.calculate_weight()
