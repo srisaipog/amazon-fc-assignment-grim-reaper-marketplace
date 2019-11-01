@@ -41,9 +41,10 @@ class Compartment:
         for category in compartments.keys():
             if Product.category == category:
                 compartments[category].append(product)
-
             else:
                 compartments.add(f"{Product.category}", [{f"Product.name", f"Product.barcode"}])
+                
+        return compartments
 
             
 class Trolly:
