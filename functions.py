@@ -35,14 +35,15 @@ class Compartment:
     
     def __init__(self, category):
         self.category = category
-        self.shelf = []
 
-    def add_product(self, category, Product):
-        if Product.category in compartments.keys():
-            compartments[f"{Product.category}"] = f"{Product.name}"
-        else:
+    def add_product_compartment(self, category, Product):
+        product = {f"Product.name", f"Product.barcode"}
+        for category in compartments.keys():
+            if Product.category == category:
+                compartments[category].append(product)
 
-            compartments.add(f"{Product.category}", f"{Product.name}")
+            else:
+                compartments.add(f"{Product.category}", [{f"Product.name", f"Product.barcode"}])
 
             
 class Trolly:
